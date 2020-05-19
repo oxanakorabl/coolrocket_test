@@ -1,23 +1,27 @@
 package com.coolrocket.charttest.ui
 
 import com.coolrocket.charttest.api.Api
-import com.coolrocket.charttest.api.CountBody
 import io.reactivex.schedulers.Schedulers
 import me.dmdev.rxpm.PresentationModel
 import timber.log.Timber
 
-class DataPm(private val api: Api) : PresentationModel() {
+class DataPm(private val api: Api, private val router: Router) : PresentationModel() {
 
     override fun onCreate() {
         super.onCreate()
 
-        api.getPoints("1.1", CountBody(8))
+        api.getPoints("1.1", 8)
             .subscribeOn(Schedulers.io())
             .subscribe({
-                Timber.e("${it.response.result}  ${it.response.message}")
 
+
+                if (it.message.isNotEmpty()) {
+                    Timber.e("${it.result} ${it.message}")
+                    router.showSnack(it.message)
+                }
             }, { e ->
                 Timber.e(e)
+                router.showSnack(e.message!!)
             })
             .untilDestroy()
     }

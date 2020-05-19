@@ -1,6 +1,8 @@
 package com.coolrocket.charttest.dagger
 
 import com.coolrocket.charttest.api.Api
+import com.coolrocket.charttest.api.Response
+import com.coolrocket.charttest.api.ResponseDeserializer
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -40,8 +42,7 @@ class NetworkModule {
     fun provideGson(): Gson {
         return GsonBuilder()
             .setLenient()
-            // .registerTypeAdapter(Coord::class.java, CoordDeserializer())
-            // .registerTypeAdapter(Product::class.java, ProductDeserializer())
+             .registerTypeAdapter(Response::class.java, ResponseDeserializer())
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z")
             .create()
     }
