@@ -1,14 +1,13 @@
 package com.coolrocket.charttest.api
 
 import io.reactivex.Observable
-import io.reactivex.Single
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface Api {
 
     @POST("mobws/json/pointsList")
-    fun getPoints(@Header("version") version: String = "1.1", @Body body: PointBody): Observable<Any>
+    fun getPoints(@Query("version") version: String, @Body body: CountBody): Observable<BaseResponse<Result>>
 
 }
