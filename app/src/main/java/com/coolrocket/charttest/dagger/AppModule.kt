@@ -2,10 +2,12 @@ package com.coolrocket.charttest.dagger
 
 import android.content.Context
 import com.coolrocket.charttest.CoolApp
+import com.coolrocket.charttest.Repository
 import com.coolrocket.charttest.api.Api
+import com.coolrocket.charttest.ui.ChartPm
 import com.coolrocket.charttest.ui.DataPm
 import com.coolrocket.charttest.ui.MainActivity
-import com.coolrocket.charttest.ui.Router
+import com.coolrocket.charttest.Router
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,11 +21,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideActivity(): MainActivity = MainActivity.INSTANCE
-
-    @Provides
-    @Singleton
-    fun provideDataPm(api: Api, router: Router): DataPm = DataPm(api, router)
+    fun provideRepository(api: Api): Repository = Repository(api)
 
     @Provides
     @Singleton

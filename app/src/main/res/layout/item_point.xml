@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="7"
+    android:padding="4dp"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <TextView
+        tool:text="1"
+        android:id="@+id/item_point_position"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        tool:text="123"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:id="@+id/item_point_x"
+        android:layout_weight="3"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        tool:text="234"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:id="@+id/item_point_y"
+        android:layout_weight="3"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

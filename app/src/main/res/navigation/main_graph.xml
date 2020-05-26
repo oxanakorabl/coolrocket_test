@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_data" >
         <action
             android:id="@+id/action_dataFragment_to_chartFragment"
-            app:destination="@id/chartFragment" />
+            app:destination="@id/chartFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/dataFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment

@@ -31,6 +31,6 @@ class DataFragment : PmFragment<DataPm>() {
 
     }
 
-    override fun providePresentationModel() = ComponentHolder.appComponent.geDataPm()
+    override fun providePresentationModel() = DataPm()
 
 }

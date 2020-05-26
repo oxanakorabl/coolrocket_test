@@ -1,14 +1,19 @@
 package com.coolrocket.charttest.ui
 
-import com.coolrocket.charttest.api.Api
-import io.reactivex.schedulers.Schedulers
+import com.coolrocket.charttest.Repository
+import com.coolrocket.charttest.Router
+import com.coolrocket.charttest.api.Response
+import com.coolrocket.charttest.dagger.ComponentHolder
 import me.dmdev.rxpm.PresentationModel
 import me.dmdev.rxpm.action
 import me.dmdev.rxpm.state
 import me.dmdev.rxpm.widget.inputControl
 import timber.log.Timber
 
-class DataPm(private val api: Api, private val router: Router) : PresentationModel() {
+class DataPm : PresentationModel() {
+
+    private val repository: Repository = ComponentHolder.appComponent.getRepository()
+    private val router: Router = ComponentHolder.appComponent.getRouter()
 
     val input = inputControl()
     val buttonEnabled = state(false) {
@@ -23,28 +28,25 @@ class DataPm(private val api: Api, private val router: Router) : PresentationMod
             .map { input.text }
             .switchMap {
                 router.hideKeyboard()
-                //TODO move to model
-                api.getPoints("1.1", input.text.value.toInt())
-                    .subscribeOn(Schedulers.io())
+                repository.getApiPoints(input.text.value.toInt())
             }
-            .subscribe({ response ->
-                if (response.message.isNotEmpty()) {
-                    Timber.e(response.message)
-                    router.showSnack(response.message)
-                } else {
-                    Timber.e("yes")
-                    //TODO save to repo
-                    // router.openChart()
-                }
-            },
-                { error ->
-                    Timber.e(error)
-                    error.message?.let {
-                        router.showSnack(it)
-                    }
-                })
+            .subscribe({ handleResponse(it) }, { displayError(it) })
             .untilDestroy()
-
     }
 
+    private fun handleResponse(response: Response) {
+        if (response.message.isNotEmpty()) {
+            router.showSnack(response.getDecodedMessage())
+        } else {
+            response.points?.let {
+                repository.storePoints(response.points)
+            }
+            router.openChart()
+        }
+    }
+
+    private fun displayError(error: Throwable) {
+        Timber.e(error)
+        error.message?.let { router.showSnack(it) }
+    }
 }
