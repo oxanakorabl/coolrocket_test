@@ -7,7 +7,11 @@ import android.view.ViewGroup
 
 import com.coolrocket.charttest.R
 import com.coolrocket.charttest.dagger.ComponentHolder
+import com.jakewharton.rxbinding3.view.clicks
+import kotlinx.android.synthetic.main.fragment_data.*
 import me.dmdev.rxpm.base.PmFragment
+import me.dmdev.rxpm.bindTo
+import me.dmdev.rxpm.widget.bindTo
 
 
 class DataFragment : PmFragment<DataPm>() {
@@ -21,6 +25,9 @@ class DataFragment : PmFragment<DataPm>() {
     }
 
     override fun onBindPresentationModel(pm: DataPm) {
+        pm.input.bindTo(data_fragment_enter_count)
+        data_fragment_button.clicks().bindTo(pm.go)
+        pm.buttonEnabled bindTo data_fragment_button::setEnabled
 
     }
 
