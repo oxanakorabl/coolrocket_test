@@ -8,4 +8,7 @@
     <string name="item_point_header_number">Номер</string>
     <string name="item_point_header_x">Координата X</string>
     <string name="item_point_header_y">Координата Y</string>
+    <string name="save">Сохранить</string>
+    <string name="chart_fragment_no_repmisssion">Нет разрешения - нет картинки</string>
+    <string name="chart_fragment_saved">Готово</string>
 </resources>
