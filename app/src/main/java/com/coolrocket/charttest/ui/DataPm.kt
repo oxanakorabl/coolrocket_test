@@ -3,17 +3,13 @@ package com.coolrocket.charttest.ui
 import com.coolrocket.charttest.Repository
 import com.coolrocket.charttest.Router
 import com.coolrocket.charttest.api.Response
-import com.coolrocket.charttest.dagger.ComponentHolder
 import me.dmdev.rxpm.PresentationModel
 import me.dmdev.rxpm.action
 import me.dmdev.rxpm.state
 import me.dmdev.rxpm.widget.inputControl
 import timber.log.Timber
 
-class DataPm : PresentationModel() {
-
-    private val repository: Repository = ComponentHolder.appComponent.getRepository()
-    private val router: Router = ComponentHolder.appComponent.getRouter()
+class DataPm(private val repository: Repository, private val router: Router) : PresentationModel() {
 
     val input = inputControl()
     val buttonEnabled = state(false) {
@@ -35,13 +31,11 @@ class DataPm : PresentationModel() {
     }
 
     private fun handleResponse(response: Response) {
-        if (response.message.isNotEmpty()) {
-            router.showSnack(response.getDecodedMessage())
-        } else {
-            response.points?.let {
-                repository.storePoints(response.points)
-            }
+        if (response.isSuccess) {
+            response.points?.let { repository.storePoints(response.points) }
             router.openChart()
+        } else {
+            router.showSnack(response.safeMessage)
         }
     }
 

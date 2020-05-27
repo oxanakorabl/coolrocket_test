@@ -1,20 +1,16 @@
 package com.coolrocket.charttest.api
 
-import android.util.Base64
+import com.coolrocket.charttest.decodeIfBase64Encoded
 
-data class Response(val result: Int, val points: List<Point>?, val message: String) {
+data class Response(val result: Int, val points: List<Point>?, private val message: String) {
 
-    fun getDecodedMessage(): String {
-        return try {
-            val data: ByteArray = Base64.decode(message, Base64.DEFAULT)
-            String(data, Charsets.UTF_8)
-        } catch (e: Exception) {
-            message
-        }
-    }
+    val safeMessage: String
+        get() = message.decodeIfBase64Encoded()
+
+    val isSuccess = message.isEmpty()
 }
-
 
 data class PointsResponse(val points: List<Point>)
 
 data class ErrorResponse(val result: Int, val message: String)
+

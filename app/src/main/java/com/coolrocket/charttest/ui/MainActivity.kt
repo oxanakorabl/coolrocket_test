@@ -14,5 +14,4 @@ class MainActivity : AppCompatActivity() {
         CoolApp.ACTIVITY_INSTANCE = this
         setContentView(R.layout.activity_main)
     }
-
 }

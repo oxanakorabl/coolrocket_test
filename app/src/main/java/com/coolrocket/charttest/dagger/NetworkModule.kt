@@ -15,7 +15,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-import java.util.*
 import javax.inject.Singleton
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
@@ -36,13 +35,12 @@ class NetworkModule {
             .create(Api::class.java)
     }
 
-
     @Provides
     @Singleton
     fun provideGson(): Gson {
         return GsonBuilder()
             .setLenient()
-             .registerTypeAdapter(Response::class.java, ResponseDeserializer())
+            .registerTypeAdapter(Response::class.java, ResponseDeserializer())
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z")
             .create()
     }
@@ -62,8 +60,6 @@ class NetworkModule {
     }
 
     private fun OkHttpClient.Builder.acceptNotTrustedCertificates() {
-
-        // Create a trust manager that does not validate certificate chains
         val trustManager = object : X509TrustManager {
             override fun getAcceptedIssuers(): Array<X509Certificate>? {
                 return arrayOf()
@@ -77,11 +73,8 @@ class NetworkModule {
             override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
             }
         }
-
-        // Install the all-trusting trust manager
         val sslContext = SSLContext.getInstance("SSL")
         sslContext.init(null, arrayOf(trustManager), java.security.SecureRandom())
-        // Create an ssl socket factory with our all-trusting manager
         val sslSocketFactory = sslContext.socketFactory
         sslSocketFactory(sslSocketFactory, trustManager)
         hostnameVerifier(HostnameVerifier { _, _ -> true })
